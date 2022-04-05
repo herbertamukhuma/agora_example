@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-const appId = "<-- Insert App Id -->";
-const token = "<-- Insert Token -->";
+import 'settings.dart';
 
 void main() => runApp(const MaterialApp(home: MyApp()));
 
@@ -30,11 +30,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initAgora() async {
-    // retrieve permissions
-    await [
-      Permission.microphone,
-      Permission.camera
-    ].request();
+    if (!kIsWeb) {
+      // retrieve permissions
+      await [
+        Permission.microphone,
+        Permission.camera
+      ].request();
+    }
 
     //create the engine
     _engine = await RtcEngine.create(appId);
@@ -62,7 +64,7 @@ class _MyAppState extends State<MyApp> {
       ),
     );
 
-    await _engine.joinChannel(token, "test", null, 0);
+    await _engine.joinChannel(appToken, "test", null, 0);
   }
 
   // Create UI with local view and remote view
