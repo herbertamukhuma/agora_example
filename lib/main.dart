@@ -40,6 +40,18 @@ class _MyAppState extends State<MyApp> {
 
     //create the engine
     _engine = await RtcEngine.create(appId);
+
+    /// choose video device
+    // var deviceManager = await _engine.deviceManager;
+
+    // List<MediaDeviceInfo> devices = await deviceManager.enumerateVideoDevices();
+
+    // devices.forEach((element) {
+    //   print("device id: ${element.deviceId}, device name: ${element.deviceName}");
+    // });
+
+    // await deviceManager.setVideoDevice("8407de705a6761f356127b95aa134c0cea5067a0bfc7c4f123791ce67bc8bfcc");
+
     await _engine.enableVideo();
     _engine.setEventHandler(
       RtcEngineEventHandler(
@@ -64,7 +76,7 @@ class _MyAppState extends State<MyApp> {
       ),
     );
 
-    await _engine.joinChannel(appToken, "test", null, 0);
+    await _engine.joinChannel(appToken, "test", null, 123456789);
   }
 
   // Create UI with local view and remote view
@@ -100,6 +112,7 @@ class _MyAppState extends State<MyApp> {
       return rtc_remote_view.SurfaceView(
         uid: _remoteUid!,
         channelId: "test",
+        renderMode: VideoRenderMode.Fit,
       );
     } else {
       return const Text(
